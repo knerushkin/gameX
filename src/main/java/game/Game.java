@@ -41,10 +41,10 @@ public class Game {
     }
 
     public Choosable play(Player player) {
-        Choosable choosable = player.choose(this.boxes.stream()
+        Box box = (Box) player.choose(this.boxes.stream()
                         .filter((b) -> !b.isExecuted())
                         .collect(Collectors.toList()));
-        return choosable;
+        return box;
     }
 
     public int getBank() { return this.bank; }
@@ -60,10 +60,7 @@ public class Game {
         return money;
     }
 
-//    public Function<Player, Integer> assignReward(MoneyReward reward) {
-//        return player -> player.setReward(this.getReward(reward.getMoney()));
-//    }
-
+    // TODO: access modifier. visible only in terminator event. exclude from user interface
     public void terminate(Player player) {
         player.resetPrivilege();
         this.terminated = true;
@@ -103,10 +100,6 @@ public class Game {
         }
 
         public Game build() {
-            // No reward.Reward game have no sense.
-            // 1 reward game have no sense.
-            assert this.elements.size() > 1;
-
             Collections.shuffle(this.elements);
             return new Game(this);
         }

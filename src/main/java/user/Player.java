@@ -1,13 +1,13 @@
 package user;
 
-import game.Box;
 import game.Choosable;
 import game.Game;
 import game.event.GameElement;
-import game.event.Priveledge;
+import game.event.AbstractPrivilege;
+import game.event.Privilege;
+import user.handlers.Privileges;
 import user.strategy.ChoiceStrategy;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,24 +23,25 @@ public class Player {
 
     private Map<Game, Statistic> gameStatistics = new HashMap<>();
 
-    private List<Priveledge> priveledges = new ArrayList<>();
+    private Privileges privileges = new Privileges();
 
     private ChoiceStrategy<Choosable> gameStrategy;
 
     public boolean hasPrivileges(GameElement element) {
-        System.out.println("has privileges");
-        System.out.println(priveledges);
-        System.out.println(priveledges.size());
         return false;
     }
 
-    public void setPrivilege(Priveledge priveledge) {
-        priveledges.add(priveledge);
+    public void setPrivilege(AbstractPrivilege privilege) {
+        privileges.add(privilege);
     }
 
-    public void usePrivilege(GameElement element) {  }
+    public boolean usePrivilege(GameElement element) {
+        AbstractPrivilege privilege = this.privileges.handle(element);
+        if(privilege == null) return false;
+        return true;
+    }
 
-    public void resetPrivilege() { this.priveledges.clear(); }
+    public void resetPrivilege() { this.privileges.reset(); }
 
     public Player(ChoiceStrategy<Choosable> gameStrategy) {
         this.gameStrategy = gameStrategy;
@@ -50,6 +51,8 @@ public class Player {
 
     public int getMoney() { return this.money; }
 
+
+    // TODO:REFACTORING
     public void play(Game game) {
 
         Statistic statistic;
@@ -64,11 +67,9 @@ public class Player {
         Choosable choosable;
         while(!game.isTerminated()) {
             choosable = game.play(this);
-            System.out.println(choosable);
             if (choosable != null) reward += choosable.execute(this, game);
         }
         statistic.update(reward);
-        //System.out.println(reward);
         game.exit();
     }
 

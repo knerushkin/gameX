@@ -37,10 +37,6 @@ public class Money extends GameElement {
         this.executed = false;
     }
 
-    @Override
-    public void terminate(Player player, Game game) {
-        player.setMoney(game.getMoney(money));
-    }
 
     @Override
     public List<Money> quantity(int n) {

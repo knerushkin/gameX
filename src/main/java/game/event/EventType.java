@@ -8,7 +8,7 @@ public enum EventType {
     GAME_OVER,
     SECOND_CHANCE ;
 
-    public Event getEvent() {
+    public GameElement getEvent() {
         switch (this) {
             case GAME_OVER:
                 return new GameOver();

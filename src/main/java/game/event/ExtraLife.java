@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 /**
  * Created by ekanner on 2017-03-23.
  */
-public class ExtraLife extends Event implements Priveledge {
+public class ExtraLife extends AbstractPrivilege {
 
     private boolean executed;
 
@@ -19,13 +19,9 @@ public class ExtraLife extends Event implements Priveledge {
     }
 
     public ExtraLife(ExtraLife other) {
-        super(other);
+        super();
     }
 
-    @Override
-    public void terminate(Player player, Game game) {
-
-    }
 
     @Override
     public void reset() {
@@ -47,5 +43,11 @@ public class ExtraLife extends Event implements Priveledge {
     @Override
     public List<? extends GameElement> quantity(int n) {
         return Stream.generate(() -> new ExtraLife(this)).limit(n).collect(Collectors.toList());
+    }
+
+    @Override
+    public AbstractPrivilege handle(GameElement element) {
+        if( element instanceof Terminate);
+        return null;
     }
 }

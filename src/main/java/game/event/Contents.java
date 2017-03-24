@@ -9,7 +9,7 @@ public class Contents {
         return new Money(money);
     }
 
-    static public Event getEvent(EventType eventType) {
+    static public GameElement getEvent(EventType eventType) {
         return eventType.getEvent();
     }
 }

@@ -21,6 +21,6 @@ public class Statistic {
     public String toString() {
         long last = countResult.stream().count();
         double total = (double) countResult.stream().mapToInt(Integer::intValue).sum();
-        return  "Totoal: " + total  + ", Average " + total / last ;
+        return  "Total: " + total  + ", Average " + total / last ;
     }
 }

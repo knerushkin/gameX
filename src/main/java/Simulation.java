@@ -32,7 +32,7 @@ public class Simulation {
                 )
                 .addContent(Contents.getEvent(EventType.EXTRA_LIFE).quantity(5))
                 .build();
-        System.out.println(game1.getBoxes());
+//        System.out.println(game1.getBoxes());
 
         Game game2 = new Game.GameBuilder(GAME_BUDGET)
                 .addContent(Contents.getMoney(300).quantity(3))
@@ -50,16 +50,22 @@ public class Simulation {
         List<Player> players = new ArrayList<>();
 //        players.add(new Player(Strategies.getRandom()));
         players.add(new Player(Strategies.getRandom()));
-//        players.add(new Player(Strategies.getRandom()));
-//        players.add(new Player(Strategies.getSequence()));
+        players.add(new Player(Strategies.getRandom()));
+        players.add(new Player(Strategies.getSequence()));
 //        players.add(new Player(Strategies.getLastFirst()));
 
         while(!game1.isBankEmpty()) {
 //            System.out.println(game1.getBoxes());
 //            System.out.println();
-            System.out.println(game1.getBoxes());
-            for (Player player : players)
+//            System.out.println(game1.getBoxes());
+            int i = 0;
+            for (Player player : players) {
+//                System.out.println("###########");
+//                System.out.println("Player: " + ++i);
+//                System.out.println("###########");
+//                System.out.println(game1.getBoxes());
                 player.play(game1);
+            }
         }
 
         // TODO:REFACTORING: game start point move to Game.play(player)

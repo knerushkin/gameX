@@ -10,22 +10,18 @@ import java.util.stream.Stream;
 /**
  * Created by knerushkin on 22/03/2017.
  */
-public class SecondChance extends Event implements Priveledge {
+public class SecondChance extends AbstractPrivilege implements Terminate {
 
     private boolean executed;
 
     public SecondChance() { }
 
-    public SecondChance(SecondChance event) {
-        super(event);
-    }
+    public SecondChance(SecondChance event) { super(); }
 
     @Override
     public int execute(Player player, Game game) {
         this.executed = true;
         player.setPrivilege(this);
-        System.out.println("SECOND CHANCE");
-        //player.play(game);
         return 0;
     }
 
@@ -47,5 +43,10 @@ public class SecondChance extends Event implements Priveledge {
     @Override
     public List<? extends GameElement> quantity(int n) {
         return Stream.generate(() -> new SecondChance(this)).limit(n).collect(Collectors.toList());
+    }
+
+    @Override
+    public AbstractPrivilege handle(GameElement element) {
+        return null;
     }
 }
