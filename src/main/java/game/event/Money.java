@@ -21,23 +21,10 @@ public class Money extends GameElement {
     public Money(Money other) { this.money = other.money; }
 
     @Override
-    public void execute(Player player, Game game) {
+    public int execute(Player player, Game game) {
         this.executed = true;
-        player.setMoney(game.getMoney(money));
-//        System.out.println("MONEY REWARD: " + this.money);
-//        System.out.println("PLAYER: " + player.getMoney());
-//        System.out.println("GAME BANK: " + game.getBank());
-//        System.out.println();
-        player.play(game);
-    }
-
-    //@Override
-    public void terminate(Player player, Game game) {
-        player.setMoney(game.getMoney(money));
-
-//        System.out.println("MONEY REWARD: " + this.money);
-//        System.out.println("PLAYER: " + player.getMoney());
-//        System.out.println("GAME BANK: " + game.getBank());
+        return player.setMoney(game.getMoney(money));
+        //player.play(game);
     }
 
     @Override
@@ -51,13 +38,13 @@ public class Money extends GameElement {
     }
 
     @Override
-    public List<Money> quantity(int n) {
-        return Stream.generate(() -> new Money(this)).limit(n).collect(Collectors.toList());
+    public void terminate(Player player, Game game) {
+        player.setMoney(game.getMoney(money));
     }
 
     @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + " " + money;
+    public List<Money> quantity(int n) {
+        return Stream.generate(() -> new Money(this)).limit(n).collect(Collectors.toList());
     }
 
 }

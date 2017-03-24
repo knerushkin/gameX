@@ -30,6 +30,8 @@ public class Game {
     List<Box> boxes;
     List<GameElement> elements;
 
+    private boolean terminated;
+
     private int bank;
 
     private Game(GameBuilder builder) {
@@ -38,14 +40,11 @@ public class Game {
         this.bank = builder.bank;
     }
 
-    public GameElement play(Player player) {
-
-        GameElement element = player.choose(this.elements.stream()
-                        .filter((e) -> !e.isExecuted())
+    public Choosable play(Player player) {
+        Choosable choosable = player.choose(this.boxes.stream()
+                        .filter((b) -> !b.isExecuted())
                         .collect(Collectors.toList()));
-
-        return element;
-
+        return choosable;
     }
 
     public int getBank() { return this.bank; }
@@ -66,23 +65,20 @@ public class Game {
 //    }
 
     public void terminate(Player player) {
-        elements.stream().forEach(Executable::reset);
+        player.resetPrivilege();
+        this.terminated = true;
+        boxes.stream().forEach(Executable::reset);
     }
 
-    public List<GameElement> getElements() {
-        return elements;
+    public boolean isTerminated() { return this.terminated; }
+
+    public void exit() {
+        Collections.shuffle(this.boxes);
+        this.terminated = false;
     }
 
-    public class Box {
-
-        GameElement element;
-
-        public Box(GameElement element) { this.element = element; }
-
-//        public boolean isEmpty() { return this.reward.isExecuted(); }
-
-        public GameElement getReward(Player player) { return this.element; }
-
+    public List<Box> getBoxes() {
+        return boxes;
     }
 
 

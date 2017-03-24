@@ -10,7 +10,7 @@ public interface Executable {
 
     void reset();
 
-    void execute(Player player, Game game);
+    int execute(Player player, Game game);
 
     boolean isExecuted();
 

@@ -1,5 +1,6 @@
 package game.event;
 
+import game.Choosable;
 import game.Game;
 import user.Player;
 
@@ -24,17 +25,36 @@ public class GameOver extends Event {
 
     @Override
     public void reset() {
+        if(additionalRewards != null) additionalRewards.stream().forEach(Executable::reset);
         this.executed = false;
     }
 
     @Override
-    public void execute(Player player, Game game) {
+    public int execute(Player player, Game game) {
         this.executed = true;
-        if(!this.additionalRewards.isEmpty()) {
-            GameElement element = player.choose(this.additionalRewards);
-            element.terminate(player, game);
+        int result = 0;
+        if(player.hasPrivileges(this)) {
+            player.usePrivilege(this);
+        } else {
+            System.out.println("GAME OVER");
+            // TODO: Money reward not removed from additional rewards pool in case they were chosen
+            // In case more than one instance of ExtraLife Reward is in additional reward pool things become more complicated
+            if(!this.additionalRewards.isEmpty()) {
+                Choosable choosable = player.choose(this.additionalRewards);
+                result = choosable.execute(player, game);
+                System.out.println(this.additionalRewards.stream()
+                        .filter((b) -> !b.isExecuted())
+                        .collect(Collectors.toList()));
+                System.out.println(game.getBoxes().stream()
+                        .filter((b) -> !b.isExecuted())
+                        .collect(Collectors.toList()));
+                System.out.println("ADDITIONAL REWARD " + choosable.getClass().getSimpleName() + " "  + result);
+            }
+
+//            System.exit(0);
+            this.terminate(player, game);
         }
-        game.terminate(player);
+        return result;
     }
 
     @Override
@@ -49,6 +69,6 @@ public class GameOver extends Event {
 
     @Override
     public void terminate(Player player, Game game) {
-
+        game.terminate(player);
     }
 }

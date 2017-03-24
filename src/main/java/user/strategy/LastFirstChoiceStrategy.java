@@ -8,7 +8,7 @@ import java.util.List;
 public class LastFirstChoiceStrategy<T> implements ChoiceStrategy<T> {
 
     @Override
-    public T choose(List<T> elements) {
+    public T choose(List<? extends T> elements) {
         if(elements.isEmpty()) return null;
         return elements.get(elements.size() - 1);
     }

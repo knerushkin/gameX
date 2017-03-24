@@ -21,14 +21,12 @@ public abstract class Event extends GameElement implements Executable{
     public Event addAdditionalContent(GameElement element) {
         if(additionalRewards == null) additionalRewards = new ArrayList<GameElement>();
         additionalRewards.add(element);
-        Collections.shuffle(additionalRewards);
         return this;
     }
 
     public Event addAdditionalContent(List<? extends GameElement> elements) {
         if(additionalRewards == null) additionalRewards = new ArrayList<GameElement>();
         additionalRewards.addAll(elements);
-        Collections.shuffle(additionalRewards);
         return this;
     }
 }

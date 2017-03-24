@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 /**
  * Created by knerushkin on 22/03/2017.
  */
-public class SecondChance extends Event {
+public class SecondChance extends Event implements Priveledge {
 
     private boolean executed;
 
@@ -21,15 +21,12 @@ public class SecondChance extends Event {
     }
 
     @Override
-    public void execute(Player player, Game game) {
+    public int execute(Player player, Game game) {
         this.executed = true;
+        player.setPrivilege(this);
         System.out.println("SECOND CHANCE");
-        player.play(game);
-    }
-
-    public void terminate(Player player, Game game) {
-        this.executed = true;
-        player.play(game);
+        //player.play(game);
+        return 0;
     }
 
     @Override
@@ -40,6 +37,11 @@ public class SecondChance extends Event {
     @Override
     public void reset() {
         this.executed = false;
+    }
+
+    @Override
+    public void terminate(Player player, Game game) {
+        this.execute(player, game);
     }
 
     @Override

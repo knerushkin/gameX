@@ -6,50 +6,79 @@ import user.strategy.RandomChoiceStrategy;
 import user.strategy.SequenceChoiceStrategy;
 import user.strategy.Strategies;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by knerushkin on 20/03/2017.
  */
 public class Simulation {
 
-    final static int GAME_BUDGET = 10000000;
+    private final static int GAME_BUDGET = 10000000;
 
     public static void main(String[] args) {
 
-        Game game = new Game.GameBuilder(GAME_BUDGET)
-                .addContent(Contents.getMoney(100).quantity(3))
-                .addContent(Contents.getMoney(20).quantity(5))
-                .addContent(Contents.getMoney(5).quantity(9))
+        Game game1 = new Game.GameBuilder(GAME_BUDGET)
+                .addContent(Contents.getMoney(100))
+                .addContent(Contents.getMoney(20).quantity(3))
+                .addContent(Contents.getMoney(5).quantity(5))
                 .addContent(Contents.getEvent(EventType.GAME_OVER)
                                     .addAdditionalContent(Contents.getMoney(5))
                                     .addAdditionalContent(Contents.getMoney(10))
                                     .addAdditionalContent(Contents.getMoney(20))
                                     .addAdditionalContent(Contents.getEvent(EventType.SECOND_CHANCE))
-                                    .quantity(3))
+//                                    .quantity(3))
+                )
+                .addContent(Contents.getEvent(EventType.EXTRA_LIFE).quantity(5))
+                .build();
+        System.out.println(game1.getBoxes());
+
+        Game game2 = new Game.GameBuilder(GAME_BUDGET)
+                .addContent(Contents.getMoney(300).quantity(3))
+                .addContent(Contents.getMoney(20).quantity(4))
+                .addContent(Contents.getMoney(5).quantity(5))
+                .addContent(Contents.getEvent(EventType.GAME_OVER)
+                        .addAdditionalContent(Contents.getMoney(5))
+                        .addAdditionalContent(Contents.getMoney(10))
+                        .addAdditionalContent(Contents.getMoney(20))
+                        .addAdditionalContent(Contents.getEvent(EventType.SECOND_CHANCE))
+                        .quantity(2))
                 //.addContent(Contents.getEvent(EventType.EXTRA_LIFE))
                 .build();
 
-        System.out.println(game.getElements());
+        List<Player> players = new ArrayList<>();
+//        players.add(new Player(Strategies.getRandom()));
+        players.add(new Player(Strategies.getRandom()));
+//        players.add(new Player(Strategies.getRandom()));
+//        players.add(new Player(Strategies.getSequence()));
+//        players.add(new Player(Strategies.getLastFirst()));
 
-        Player player1 = new Player(Strategies.getRandom());
-        Player player2 = new Player(Strategies.getRandom());
-        Player player3 = new Player(Strategies.getRandom());
-        Player player4 = new Player(Strategies.getSequence());
-        Player player5 = new Player(Strategies.getLastFirst());
+        while(!game1.isBankEmpty()) {
+//            System.out.println(game1.getBoxes());
+//            System.out.println();
+            System.out.println(game1.getBoxes());
+            for (Player player : players)
+                player.play(game1);
+        }
 
-        Player[] players = { player1, player2, player3, player4, player5 };
-
-        while(!game.isBankEmpty())
-            for(Player player: players)
-                player.play(game);
+        // TODO:REFACTORING: game start point move to Game.play(player)
+//        while(!game2.isBankEmpty()) {
+////            System.out.println(game2.getBoxes());
+////            System.out.println();
+//            for (Player player : players)
+//                player.play(game2);
+//        }
 
         System.out.println();
 
-        for(Player player: players)
-            System.out.println(player.getMoney());
+        for(Player player: players) {
+            System.out.println();
+            System.out.println(player.getGameStatistics(game1));
+//            System.out.println(player.getGameStatistics(game2));
+        }
 
         System.out.println();
-        System.out.println(Arrays.stream(players).mapToInt(Player::getMoney).sum());
+        System.out.println(players.stream().mapToInt(Player::getMoney).sum());
     }
 }
