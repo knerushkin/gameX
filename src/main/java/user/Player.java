@@ -17,6 +17,8 @@ import java.util.Map;
  */
 public class Player {
 
+    private String name;
+
     private int bank;
 
     private int money;
@@ -27,8 +29,15 @@ public class Player {
 
     private ChoiceStrategy<Choosable> gameStrategy;
 
+
+
+    // Priveleges move to interface
     public boolean hasPrivileges(GameElement element) {
         return false;
+    }
+
+    public Privileges getPriveleges() {
+        return this.privileges;
     }
 
     public void setPrivilege(AbstractPrivilege privilege) {
@@ -42,19 +51,31 @@ public class Player {
     }
 
     public void resetPrivilege() { this.privileges.reset(); }
+    // Priveleges move to interface
 
-    public Player(ChoiceStrategy<Choosable> gameStrategy) {
+    /*
+     * Construtcor
+     */
+    public Player(String name, ChoiceStrategy<Choosable> gameStrategy) {
+        this.name = name;
         this.gameStrategy = gameStrategy;
     }
 
-    public int setMoney(int money) { this.money += money; return money; }
 
-    public int getMoney() { return this.money; }
+    //TODO: Consider necessity money getter/setter
+    public int setMoney(int money) {
+        this.money += money;
+        return money;
+    }
 
+    public int getMoney() {
+        return this.money;
+    }
 
     // TODO:REFACTORING
     public void play(Game game) {
 
+        // Find game statistics
         Statistic statistic;
         if(gameStatistics.containsKey(game))
             statistic = gameStatistics.get(game);
@@ -76,11 +97,21 @@ public class Player {
     public Statistic getGameStatistics(Game game) {
         if(gameStatistics.containsKey(game))
             return gameStatistics.get(game);
-        else return null;
+        else {
+            System.out.println("Player not played this game");
+            return null;
+        }
     }
 
-    public  Choosable choose(List<? extends Choosable> elements) {
-        return gameStrategy.choose(elements);
+    public Choosable choose(List<? extends Choosable> elements) {
+        return this.gameStrategy.choose(elements);
     }
 
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", gameStrategy=" + gameStrategy +
+                '}';
+    }
 }

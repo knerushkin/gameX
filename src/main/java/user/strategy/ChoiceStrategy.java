@@ -5,6 +5,12 @@ import java.util.List;
 /**
  * Created by knerushkin on 20/03/2017.
  */
-public interface ChoiceStrategy<T> {
-    T choose(List<? extends T> list);
+public abstract class ChoiceStrategy<T> {
+
+    public abstract T choose(List<? extends T> list);
+
+    @Override
+    public String toString() {
+        return "ChoiceStrategy{" + this.getClass().getSimpleName() + "}";
+    }
 }

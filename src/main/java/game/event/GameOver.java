@@ -33,25 +33,14 @@ public class GameOver extends Event implements Terminate {
     public int execute(Player player, Game game) {
         this.executed = true;
         int result = 0;
-        if(player.hasPrivileges(this)) {
-            player.usePrivilege(this);
-        } else {
-//            System.out.println("GAME OVER");
+        if(player.usePrivilege(this));
+        else {
             // TODO: Money reward not removed from additional rewards pool in case they were chosen
-            // In case more than one instance of ExtraLife Reward is in additional reward pool things become more complicated
             if(!this.additionalRewards.isEmpty()) {
                 Choosable choosable = player.choose(this.additionalRewards);
                 result = choosable.execute(player, game);
-//                System.out.println(this.additionalRewards.stream()
-//                        .filter((b) -> !b.isExecuted())
-//                        .collect(Collectors.toList()));
-//                System.out.println(game.getBoxes().stream()
-//                        .filter((b) -> !b.isExecuted())
-//                        .collect(Collectors.toList()));
-//                System.out.println("ADDITIONAL REWARD " + choosable.getClass().getSimpleName() + " "  + result);
+                int a = 1;
             }
-
-//            System.exit(0);
             this.terminate(player, game);
         }
         return result;

@@ -5,15 +5,15 @@ package user.strategy;
  */
 public  class Strategies {
 
-    public static ChoiceStrategy getRandom() {
+    public static ChoiceStrategy getRandomChoice() {
         return new RandomChoiceStrategy();
     }
 
-    public static ChoiceStrategy getSequence() {
-        return new SequenceChoiceStrategy();
+    public static ChoiceStrategy getFirstChoice() {
+        return new FirstChoiceStrategy();
     }
 
-    public static ChoiceStrategy getLastFirst() {
-        return new LastFirstChoiceStrategy();
+    public static ChoiceStrategy getLastChoice() {
+        return new LastChoiceStrategy();
     }
 }

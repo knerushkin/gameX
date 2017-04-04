@@ -47,7 +47,8 @@ public class ExtraLife extends AbstractPrivilege {
 
     @Override
     public AbstractPrivilege handle(GameElement element) {
-        if( element instanceof Terminate);
-        return null;
+        if( element instanceof Terminate)
+            return this.remove();
+        return this.next().handle(element);
     }
 }

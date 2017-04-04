@@ -1,5 +1,6 @@
 package game.event;
 
+import game.Choosable;
 import game.Game;
 import user.Player;
 
@@ -21,13 +22,18 @@ public class SecondChance extends AbstractPrivilege implements Terminate {
     @Override
     public int execute(Player player, Game game) {
         this.executed = true;
-        player.setPrivilege(this);
-        return 0;
+        int reward = 0;
+        Choosable choosable;
+        while(!game.isTerminated()) {
+            choosable = game.play(player);
+            if (choosable != null) reward += choosable.execute(player, game);
+        }
+        return reward;
     }
 
     @Override
     public boolean isExecuted() {
-        return false;
+        return executed;
     }
 
     @Override

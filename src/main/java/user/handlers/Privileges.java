@@ -9,10 +9,21 @@ import game.event.Privilege;
  */
 public class Privileges {
 
-    private Privilege root = new Privilege();
+    private AbstractPrivilege root = new Privilege();
+
+    public void print() {
+        if(root == null) return;
+
+        AbstractPrivilege nextPrivilege = root;
+        while (nextPrivilege.hasNext()) {
+            nextPrivilege = nextPrivilege.getNext();
+            System.out.println(nextPrivilege);
+        }
+    }
 
     public void reset() {
-        while(root.hasNext()) root.next().remove();
+        if(root != null)
+            while(root.hasNext()) root.next().remove();
     }
 
     public void add(AbstractPrivilege privilege) {
@@ -20,7 +31,7 @@ public class Privileges {
     }
 
     public AbstractPrivilege handle(GameElement element) {
-        return this.root.handle(element);
+        return this.root == null ? null : this.root.handle(element);
     }
 
 }

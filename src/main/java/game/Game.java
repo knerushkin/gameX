@@ -1,5 +1,6 @@
 package game;
 
+import game.event.AbstractPrivilege;
 import game.event.Executable;
 import game.event.GameElement;
 import user.Player;
@@ -41,10 +42,16 @@ public class Game {
     }
 
     public Choosable play(Player player) {
-        Box box = (Box) player.choose(this.boxes.stream()
-                        .filter((b) -> !b.isExecuted())
-                        .collect(Collectors.toList()));
-        return box;
+
+        List<Choosable> activeBoxes = this.boxes.stream()
+                .filter((b) -> !b.isExecuted())
+                .collect(Collectors.toList());
+        if(activeBoxes.isEmpty()) {
+            this.terminate(player);
+            return null;
+        }
+        else
+            return player.choose(activeBoxes);
     }
 
     public int getBank() { return this.bank; }
@@ -62,6 +69,7 @@ public class Game {
 
     // TODO: access modifier. visible only in terminator event. exclude from user interface
     public void terminate(Player player) {
+        List<Box> privi = boxes.stream().filter(box -> { return box.element instanceof AbstractPrivilege;}).collect(Collectors.toList());
         player.resetPrivilege();
         this.terminated = true;
         boxes.stream().forEach(Executable::reset);

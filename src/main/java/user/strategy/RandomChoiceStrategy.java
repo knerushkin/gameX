@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * Created by knerushkin on 20/03/2017.
  */
-public class RandomChoiceStrategy<T> implements ChoiceStrategy<T> {
+public class RandomChoiceStrategy<T> extends ChoiceStrategy<T> {
 
     @Override
     public T choose(List<? extends T> elements) {

@@ -8,13 +8,8 @@ import java.util.List;
  */
 public abstract class Event extends GameElement {
 
-
     public Event() { }
 
-    public Event(Event other) {  }
-
-    @Override
-    public String toString() { return this.getClass().getSimpleName(); }
-
+    public Event(Event other) { super(other); }
 
 }
